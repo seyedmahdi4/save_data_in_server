@@ -1,6 +1,7 @@
 from flask import Flask, request, json
 from models import *
 import config
+from hashlib import sha256
 
 # Configure app
 app = Flask(__name__)
@@ -15,25 +16,31 @@ db = SQLAlchemy(app)
 #def index():
 #    return True
 
-#@app.route("/login", methods=['POST'])
-
-def login():
-    usr ,pas = request.values.getlist('user') , request.values.getlist('passwd')
-    return {}
+@app.route("/registery", methods=['POST'])
+def register(): 
+    try:
+        username ,password = request.values.getlist('username')[0],request.values.getlist('password')[0]
+    except:
+        return "requests is not valid"
+    u = User.query.filter_by(username=username).first()
+    if u is None:
+        password = sha256(password.encode()+config.salt).hexdigest()
+        user = User(username=username,password=password)
+        db.session.add(user)
+        db.session.commit()
+        return 'created now'
+    return "username is exist"
+    
+def check(username,password):
+    password = sha256(password.encode()+config.salt).hexdigest()
+    user = User.query.filter_by(username=username).first()
+    if user.password == password:
+        return True
+    return False
 
 @app.errorhandler(404)
 def page_not_found(e):
     return '404 error', 404
-
-def loao(Room):
-    messages = History.query.filter_by(room=Room)
-
-def save(data):
-        message = History(username=username, message=msg.encode(
-            'latin-1').decode('utf-8'), time_stamp=time_stamp, room=room, enc_key=enc_key)
-        db.session.add(message)
-        db.session.commit()
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)  # 9055 ssl_context='adhoc'
