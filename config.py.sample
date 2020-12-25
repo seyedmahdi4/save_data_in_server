@@ -1,0 +1,2 @@
+secret_key = 'secret_key_long________'
+SQLALCHEMY_DATABASE_URI = 
