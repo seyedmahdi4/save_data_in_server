@@ -16,4 +16,4 @@ class Data(db.Model):
     __tablename__ = "data"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50),unique=True)
-    enx_object = db.Column(db.String(500))
+    enx_object = db.Column(db.String(500),nullable=False)
