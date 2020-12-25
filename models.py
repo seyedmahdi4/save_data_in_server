@@ -12,9 +12,8 @@ class User(db.Model):
     username = db.Column(db.String(25), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
     
-class History(db.Model):
-    __tablename__ = "History"
+class Data(db.Model):
+    __tablename__ = "data"
     id = db.Column(db.Integer, primary_key=True)
-    enc_username = db.Column(db.String(25))
-    enc_email = db.Column(db.String(10000))
-    enc_passwd = db.Column(db.String(20),nullable=False)
+    username = db.Column(db.String(50),unique=True)
+    enx_object = db.Column(db.String(500))
